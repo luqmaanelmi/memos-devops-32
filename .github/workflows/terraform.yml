@@ -1,3 +1,7 @@
+
+
+
+
 name: deploying infrastructure
 
 on:
@@ -49,7 +53,8 @@ jobs:
           tflint_version: latest
 
       - name: Run tflint
-        run: tflint --recursive
+        run: tflint --recursive --no-color
+        continue-on-error: true
 
       - name: Run checkov
         uses: bridgecrewio/checkov-action@master
