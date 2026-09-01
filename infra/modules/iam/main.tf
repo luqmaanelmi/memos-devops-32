@@ -106,7 +106,7 @@ resource "aws_iam_role_policy" "github_actions_policy" {
       },
       {
         Effect   = "Allow"
-        Action   = ["iam:PassRole"]
+        Action   = ["iam:Get*", "iam:List*", "iam:Create*", "iam:Delete*", "iam:Update*", "iam:Put*", "iam:Attach*", "iam:Detach*", "iam:Tag*", "iam:Untag*", "iam:PassRole"]
         Resource = "*"
       },
       {
