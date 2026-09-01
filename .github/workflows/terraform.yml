@@ -1,7 +1,3 @@
-
-
-
-
 name: deploying infrastructure
 
 on:
@@ -12,7 +8,13 @@ on:
 
 env:
   AWS_REGION: eu-west-2
-  TF_WORKING_DIR: infra
+  TF_VAR_project_name: ${{ secrets.TF_VAR_PROJECT_NAME }}
+  TF_VAR_environment: ${{ secrets.TF_VAR_ENVIRONMENT }}
+  TF_VAR_root_domain: ${{ secrets.TF_VAR_ROOT_DOMAIN }}
+  TF_VAR_domain_name: ${{ secrets.TF_VAR_DOMAIN_NAME }}
+  TF_VAR_subdomain: ${{ secrets.TF_VAR_SUBDOMAIN }}
+  TF_VAR_github_org_repo: ${{ secrets.TF_VAR_GITHUB_ORG_REPO }}
+  TF_VAR_github_branch: ${{ secrets.TF_VAR_GITHUB_BRANCH }}
 
 permissions:
   id-token: write
