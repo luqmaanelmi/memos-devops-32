@@ -15,6 +15,7 @@ env:
   TF_VAR_subdomain: ${{ secrets.TF_VAR_SUBDOMAIN }}
   TF_VAR_github_org_repo: ${{ secrets.TF_VAR_GITHUB_ORG_REPO }}
   TF_VAR_github_branch: ${{ secrets.TF_VAR_GITHUB_BRANCH }}
+  TF_VAR_aws_region: ${{ secrets.TF_VAR_AWS_REGION }}
 
 permissions:
   id-token: write
