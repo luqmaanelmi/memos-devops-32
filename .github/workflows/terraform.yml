@@ -8,8 +8,6 @@ on:
 
 env:
   AWS_REGION: eu-west-2
-  TF_VAR_project_name: ${{ secrets.TF_VAR_PROJECT_NAME }}
-  TF_VAR_environment: ${{ secrets.TF_VAR_ENVIRONMENT }}
   TF_VAR_root_domain: ${{ secrets.TF_VAR_ROOT_DOMAIN }}
   TF_VAR_domain_name: ${{ secrets.TF_VAR_DOMAIN_NAME }}
   TF_VAR_subdomain: ${{ secrets.TF_VAR_SUBDOMAIN }}
@@ -40,6 +38,11 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set TF vars
+        run: |
+          echo "TF_VAR_project_name=$(echo '${{ secrets.TF_VAR_PROJECT_NAME }}' | tr -d '[:space:]')" >> $GITHUB_ENV
+          echo "TF_VAR_environment=$(echo '${{ secrets.TF_VAR_ENVIRONMENT }}' | tr -d '[:space:]')" >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
