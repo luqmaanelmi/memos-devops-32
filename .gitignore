@@ -41,3 +41,4 @@ transferring
 resolve
 transferring
 infra/modules/terraform.tfstate
+web/node_modules
