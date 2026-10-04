@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-Ddioa4ic.js";import{t as n}from"./i18n-D1c1lJOx.js";var r=e(),i=t(),a=e=>{let t=(0,r.c)(5),{date:a,format:o}=e,s;t[0]===a?s=t[1]:(s=a?.toISOString(),t[0]=a,t[1]=s);let c;return t[2]!==o||t[3]!==s?(c=(0,i.jsx)(`relative-time`,{datetime:s,lang:n.language,format:o,"no-title":``}),t[2]=o,t[3]=s,t[4]=c):c=t[4],c};export{a as t};

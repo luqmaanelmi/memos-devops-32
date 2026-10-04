@@ -1,0 +1,1 @@
+function e(e){let t=document.createElement(`a`);return t.setAttribute(`href`,e),t.href}function t(e){return new Promise((t,n)=>{let r=new FileReader;r.readAsDataURL(e),r.onload=()=>t(r.result?.toString()||``),r.onerror=e=>n(e)})}export{t as n,e as t};

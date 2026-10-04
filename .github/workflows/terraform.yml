@@ -1,0 +1,85 @@
+name: deploying infrastructure
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AWS_REGION: eu-west-2
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: terraform-state
+  cancel-in-progress: false
+
+jobs:
+  terraform-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.2.3
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+      
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        run: terraform init -input=false
+
+      - name: Setup tflint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
+
+      - name: Run tflint
+        run: tflint --recursive --no-color
+        continue-on-error: true
+
+      - name: Run checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: infra
+          soft_fail: true
+
+      - name: Terraform Plan
+        env:
+          TF_VAR_project_name: memos
+          TF_VAR_environment: dev
+          TF_VAR_root_domain: memos2.com
+          TF_VAR_domain_name: tm.memos2.com
+          TF_VAR_subdomain: tm
+          TF_VAR_github_org_repo: luqmaanelmi/memos-devops-32
+          TF_VAR_github_branch: main
+          TF_VAR_aws_region: eu-west-2
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        env:
+          TF_VAR_project_name: memos
+          TF_VAR_environment: dev
+          TF_VAR_root_domain: memos2.com
+          TF_VAR_domain_name: tm.memos2.com
+          TF_VAR_subdomain: tm
+          TF_VAR_github_org_repo: luqmaanelmi/memos-devops-32
+          TF_VAR_github_branch: main
+          TF_VAR_aws_region: eu-west-2
+        run: terraform apply -auto-approve tfplan
